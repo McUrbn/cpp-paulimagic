@@ -29,3 +29,14 @@
 *.exe
 *.out
 *.app
+
+# Xcode Junk
+*.pbxproj
+
+*.xcworkspacedata
+
+*.xcscheme
+
+*.xcuserstate
+
+*.plist
