@@ -1,4 +1,5 @@
-#pragma once
+#ifndef paulimagic_paulimatrix_h
+#define paulimagic_paulimatrix_h
 
 #include <cassert>
 #include <complex>
@@ -144,3 +145,5 @@ static const auto niY =
 static const auto niZ =
     PauliMatrix{Prefix::NegI, PauliMatrix::BasicPauliMatrix::SigmaZ};
 }
+
+#endif

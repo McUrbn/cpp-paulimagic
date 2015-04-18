@@ -1,4 +1,5 @@
-#pragma once
+#ifndef paulimagic_tensorproduct_h
+#define paulimagic_tensorproduct_h
 
 #include <algorithm>
 #include <vector>
@@ -65,3 +66,4 @@ auto operator<<(std::ostream& os, const TensorProduct& t) -> std::ostream & {
   os << ']';
   return os;
 }
+#endif

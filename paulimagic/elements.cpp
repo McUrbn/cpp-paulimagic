@@ -6,7 +6,7 @@
 //  Copyright (c) 2015 Urban Seifert. All rights reserved.
 //
 
-#include "tensorproduct.h"
+#include "elements.h"
 #include <iostream>
 
 auto testFunc() -> void {

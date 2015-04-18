@@ -1,4 +1,5 @@
-#pragma once
+#ifndef paulimagic_prefix_h
+#define paulimagic_prefix_h
 
 #include <cassert>
 #include <ostream>
@@ -77,3 +78,5 @@ auto operator<<(std::ostream& os, Prefix p) -> std::ostream & {
   }
   return os;
 }
+          
+#endif
