@@ -40,3 +40,7 @@
 *.xcuserstate
 
 *.plist
+
+*.xccheckout
+
+*.xcbkptlist

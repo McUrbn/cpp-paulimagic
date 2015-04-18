@@ -14,9 +14,7 @@
 
 class TensorProduct {
  public:
-  template <typename... PMATS>
-  TensorProduct(PMATS&&... pms)
-      : elements_{{std::forward<PMATS>(pms)...}} {}
+    explicit TensorProduct(size_t n): elements_(n), N(n) {}
 
   auto operator==(const TensorProduct& rhs) const noexcept -> bool {
     return elements_ == rhs.elements_;
@@ -27,7 +25,7 @@ class TensorProduct {
   }
 
   auto operator*(const TensorProduct& rhs) const -> TensorProduct {
-    auto res = TensorProduct{};
+    auto res = TensorProduct(N);
     for (auto i = 0u; i < N; ++i) {
       res.elements_[i] = elements_[i] * rhs.elements_[i];
     }
@@ -38,16 +36,10 @@ class TensorProduct {
         return N;
   }
     
-  template <std::size_t I, typename PMAT>
-  auto set(PMAT&& pm) -> void {
-    static_assert(I < N, "Index has to be within range.");
-    elements_[I] = std::forward<PMAT>(pm);
-  }
-
   template <typename PMAT>
   auto set(std::size_t i, PMAT&& pm) -> void {
-    assert(i < N);
-    elements_[i] = std::forward<PMAT>(pm);
+    if (i < N)
+        elements_[i] = std::forward<PMAT>(pm);
   }
 
   template <typename T = int, typename C = std::complex<T>>
