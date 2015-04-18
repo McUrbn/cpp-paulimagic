@@ -15,7 +15,7 @@
 #include <iostream>
 #include <fstream>
 
-#include "elements.cpp"
+#include "elements.h"
 
 //#include "tensorproduct.h"
 
