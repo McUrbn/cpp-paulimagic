@@ -1,7 +1,7 @@
 #pragma once
 
 #include <algorithm>
-#include <array>
+#include <vector>
 #include <cmath>
 #include <complex>
 #include <iterator>
@@ -12,29 +12,32 @@
 #include "prefix.h"
 #include "paulimatrix.h"
 
-template <std::size_t N>
 class TensorProduct {
  public:
   template <typename... PMATS>
   TensorProduct(PMATS&&... pms)
       : elements_{{std::forward<PMATS>(pms)...}} {}
 
-  auto operator==(const TensorProduct<N>& rhs) const noexcept -> bool {
+  auto operator==(const TensorProduct& rhs) const noexcept -> bool {
     return elements_ == rhs.elements_;
   }
 
-  auto operator!=(const TensorProduct<N>& rhs) const noexcept -> bool {
+  auto operator!=(const TensorProduct& rhs) const noexcept -> bool {
     return !(*this == rhs);
   }
 
-  auto operator*(const TensorProduct<N>& rhs) const -> TensorProduct<N> {
-    auto res = TensorProduct<N>{};
+  auto operator*(const TensorProduct& rhs) const -> TensorProduct {
+    auto res = TensorProduct{};
     for (auto i = 0u; i < N; ++i) {
       res.elements_[i] = elements_[i] * rhs.elements_[i];
     }
     return res;
   }
 
+  auto len() const -> std::size_t {
+        return N;
+  }
+    
   template <std::size_t I, typename PMAT>
   auto set(PMAT&& pm) -> void {
     static_assert(I < N, "Index has to be within range.");
@@ -53,21 +56,20 @@ class TensorProduct {
         std::begin(elements_), std::end(elements_), C{1, 0},
         [](C acc, const PauliMatrix& pm) { return acc * pm.trace(); });
   }
-
+    
  private:
-  template <std::size_t M>
-  friend auto operator<<(std::ostream&, const TensorProduct<M>&) -> std::ostream
+  friend auto operator<<(std::ostream&, const TensorProduct&) -> std::ostream
       &;
 
-  std::array<PauliMatrix, N> elements_;
+  std::vector<PauliMatrix> elements_;
+  std::size_t N;
 };
 
-template <std::size_t N>
-auto operator<<(std::ostream& os, const TensorProduct<N>& t) -> std::ostream & {
+auto operator<<(std::ostream& os, const TensorProduct& t) -> std::ostream & {
   os << '[';
   std::copy(std::begin(t.elements_), std::end(t.elements_) - 1,
             std::ostream_iterator<PauliMatrix>(os, " "));
-  os << t.elements_[N - 1];
+  os << t.elements_[t.len() - 1];
   os << ']';
   return os;
 }
