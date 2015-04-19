@@ -17,19 +17,25 @@
 
 #include "elements.h"
 
-//#include "tensorproduct.h"
-
 int main() {
-    //testFunc();
-    std::size_t N = 4;
-    std::cout << "N?";
-    std::cin >> N;
+    auto start = std::chrono::steady_clock::now();
     
-//    auto spin1 = TensorProduct(N+1);
-//    spin1.set(1,PM::X);
-//    
-//    auto spin2 = TensorProduct(N+1);
-//    
-//    std::cout << (spin1*spin2).trace() << std::endl;
+    std::vector<int> couplings = {1,1,1,1,1};
+    int val = 0;
     
+    std::ofstream outputFile;
+    outputFile.open("runtimesN5.txt", std::ios::app);
+    
+    for (int i = 1; i < 7; ++i) {
+        std::cout << i << std::endl;
+        start = std::chrono::steady_clock::now();
+        val = IzH0zX(i, couplings);
+        auto end = std::chrono::steady_clock::now();
+        auto diff = end - start;
+        outputFile << i << " " << std::chrono::duration <double, std::milli> (diff).count() << std::endl;
+    }
+    
+    
+    outputFile.close();
+
 }

@@ -15,7 +15,7 @@
 
 class TensorProduct {
  public:
-    explicit TensorProduct(size_t n): elements_(n), N(n) {}
+    explicit TensorProduct(size_t n): elements_(n) {}
 
   auto operator==(const TensorProduct& rhs) const noexcept -> bool {
     return elements_ == rhs.elements_;
@@ -26,20 +26,20 @@ class TensorProduct {
   }
 
   auto operator*(const TensorProduct& rhs) const -> TensorProduct {
-    auto res = TensorProduct(N);
-    for (auto i = 0u; i < N; ++i) {
+    auto res = TensorProduct(this->len());
+    for (auto i = 0u; i < res.len(); ++i) {
       res.elements_[i] = elements_[i] * rhs.elements_[i];
     }
     return res;
   }
 
   auto len() const -> std::size_t {
-        return N;
+        return elements_.size();
   }
     
   template <typename PMAT>
   auto set(std::size_t i, PMAT&& pm) -> void {
-    if (i < N)
+    if (i < this->len())
         elements_[i] = std::forward<PMAT>(pm);
   }
 
@@ -55,7 +55,6 @@ class TensorProduct {
       &;
 
   std::vector<PauliMatrix> elements_;
-  std::size_t N;
 };
 
 auto operator<<(std::ostream& os, const TensorProduct& t) -> std::ostream & {
